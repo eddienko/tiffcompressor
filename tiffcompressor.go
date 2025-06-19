@@ -25,6 +25,10 @@ var outputRoot string
 var totalOriginalBytes int64
 var totalCompressedBytes int64
 
+func printUsage() {
+	fmt.Println("Usage: tiffcompressor [--threads=N] [--logfile=FILE] [--outdir=DIR] <input_directory>")
+}
+
 func main() {
 	// Command-line flags
 	logFilePath := flag.String("logfile", "compression.log", "Path to log file")
@@ -49,7 +53,7 @@ func main() {
 			flagName := parts[0]
 			if !allowedFlags[flagName] {
 				fmt.Printf("❌ Unknown flag: %s\n", flagName)
-				fmt.Println("Usage: tiffcompressor [--threads=N] [--logfile=FILE] [--outdir=DIR] <input_directory>")
+				printUsage()
 				os.Exit(1)
 			}
 		}
@@ -58,7 +62,7 @@ func main() {
 	flag.Parse()
 
 	if flag.NArg() < 1 {
-		fmt.Println("Usage: tiffcompressor [--threads=N] [--logfile=FILE] [--outdir=DIR] <directory>")
+		printUsage()
 		os.Exit(1)
 	}
 
