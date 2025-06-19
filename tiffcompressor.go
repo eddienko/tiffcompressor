@@ -30,6 +30,31 @@ func main() {
 	logFilePath := flag.String("logfile", "compression.log", "Path to log file")
 	numThreads := flag.Int("threads", runtime.NumCPU(), "Number of concurrent workers")
 	outDir := flag.String("outdir", "", "Optional output directory (mirrors structure, no in-place overwrite)")
+
+	// Define allowed flags
+	allowedFlags := map[string]bool{
+		"--threads": true,
+		"--logfile": true,
+		"--outdir":  true,
+		"-threads":  true,
+		"-logfile":  true,
+		"-outdir":   true,
+	}
+
+	// Check for unknown flags before parsing
+	for _, arg := range os.Args[1:] {
+		if strings.HasPrefix(arg, "-") && !strings.HasPrefix(arg, "---") {
+			// Split on '=' if present (e.g., --threads=4)
+			parts := strings.SplitN(arg, "=", 2)
+			flagName := parts[0]
+			if !allowedFlags[flagName] {
+				fmt.Printf("❌ Unknown flag: %s\n", flagName)
+				fmt.Println("Usage: tiffcompressor [--threads=N] [--logfile=FILE] [--outdir=DIR] <input_directory>")
+				os.Exit(1)
+			}
+		}
+	}
+
 	flag.Parse()
 
 	if flag.NArg() < 1 {
