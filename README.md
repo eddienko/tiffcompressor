@@ -65,6 +65,12 @@ This will compress all images under ./images and save them under:
 
 The full directory tree will be preserved and the files in the input directory will not be modified.
 
+Note that in windows this should be run as 
+
+```bash
+.\tiffcompressor.exe C:\images --outdir=E:\compressed
+```
+
 ## 📊 Output
 
 The tool prints a progress bar and, upon completion, outputs a summary like:
